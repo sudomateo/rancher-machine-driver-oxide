@@ -1,19 +1,33 @@
-# Rancher Node Driver for Oxide
+= Oxide Rancher Machine Driver
 
-This is a driver implementation of https://github.com/rancher/machine for Oxide.
+This repository contains the Oxide Rancher machine driver, also known as a node
+driver in Rancher parlance. Rancher uses this node driver to provision virtual
+machines on Oxide and install Kubernetes on those virtual machines.
 
-## Build
+== Build
 
-```shell
+Build the binary using `+make+`.
+
+[source,sh]
+----
 make build
-```
+----
 
-## Deployment
+== Deployment
 
-The built binary needs to be hosted somewhere that the rancher management cluster can download it.
+Upload a built binary somewhere accessible from Rancher. The binary name must
+match the format `docker-machine-driver-*` otherwise Rancher will error when
+trying to create a new node driver.
 
-oxide-driver.yaml:
-```yaml
+Ensure your `kubectl` context is configured to use your Rancher Kubernetes
+cluster.
+
+Create the following Kubernetes manifest.
+
+.oxide-nodedriver.yaml
+[source,yaml]
+----
+---
 apiVersion: management.cattle.io/v3
 kind: NodeDriver
 metadata:
@@ -22,27 +36,29 @@ metadata:
     privateCredentialFields: token
     publicCredentialFields: host,project
   finalizers:
-    - controller.cattle.io/node-driver-controller
+  - controller.cattle.io/node-driver-controller
 spec:
   active: true
   addCloudCredential: true
   builtin: false
-  checksum: "<sha256 checksum of the binary>"
-  description: ""
+  checksum: <SHA256SUM_OF_BINARY>
+  description: "Oxide Rancher node driver."
   displayName: oxide
   externalId: ""
   uiUrl: ""
-  url: https://somewhere/rancher/is/able/to/download/docker-machine-driver-oxide
-```
+  url: "https://example.com/docker-machine-driver-oxide"
+----
 
-```shell
-kubectl apply -f oxide-driver.yaml
-```
+Apply the Kubernetes manifest to create the Oxide Rancher node driver.
 
-## UI
+[source,sh]
+----
+kubectl apply -f oxide-nodedriver.yaml
+----
 
-The default UI was sufficient for initial testing.
+== Rancher UI Extensions
 
-This was not used in the initial implementation but can be fleshed out at a later point.
+The default user interface is sufficient for most use cases.
 
-https://github.com/rancher/ui-driver-skel
+In the future, https://extensions.rancher.io/[Rancher UI Extensions] can be
+used to extend the node driver UI.

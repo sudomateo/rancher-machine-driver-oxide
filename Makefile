@@ -30,7 +30,7 @@ clean: clean-test
 	@rm -rf build
 .PHONY: clean
 
-local: 
+local:
 	CGO_ENABLED=0 \
 	  go build -o build/$(BINARY) \
 	  ${LDFLAGS} \
@@ -57,5 +57,4 @@ cover:
 $(BINARY): $(SOURCES)
 	CGO_ENABLED=0 GOOS=linux GOARCH=amd64 \
 	  go build -o build/$(BINARY) \
-	  ${LDFLAGS} \
-	  cmd/docker-machine-driver-oxide/main.go
+	  ${LDFLAGS}
