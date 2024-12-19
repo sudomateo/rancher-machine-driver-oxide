@@ -463,21 +463,26 @@ func (d *Driver) SetConfigFromFlags(opts drivers.DriverOptions) error {
 	d.AdditionalSSHPublicKeyIDs = opts.StringSlice(flagAdditionalSSHPublicKeyIDs)
 	d.SSHPort = defaultSSHPort
 
-	var err error
+	var errRequiredFlag error
+
 	if d.Host == "" {
-		err = errors.Join(err, errors.New(errRequiredOptionNotSet+flagHost))
+		errRequiredFlag = errors.Join(errRequiredFlag, errors.New(errRequiredOptionNotSet+flagHost))
 	}
 
 	if d.Token == "" {
-		err = errors.Join(err, errors.New(errRequiredOptionNotSet+flagToken))
+		errRequiredFlag = errors.Join(errRequiredFlag, errors.New(errRequiredOptionNotSet+flagToken))
 	}
 
 	if d.Project == "" {
-		err = errors.Join(err, errors.New(errRequiredOptionNotSet+flagProject))
+		errRequiredFlag = errors.Join(errRequiredFlag, errors.New(errRequiredOptionNotSet+flagProject))
 	}
 
 	if d.BootDiskImageID == "" {
-		return errors.Join(err, errors.New(errRequiredOptionNotSet+flagBootDiskImageID))
+		errRequiredFlag = errors.Join(errRequiredFlag, errors.New(errRequiredOptionNotSet+flagBootDiskImageID))
+	}
+
+	if errRequiredFlag != nil {
+		return errRequiredFlag
 	}
 
 	return nil
