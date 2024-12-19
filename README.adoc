@@ -2,7 +2,7 @@
 
 This repository contains the Oxide Rancher machine driver, also known as a node
 driver in Rancher parlance. Rancher uses this node driver to provision virtual
-machines on Oxide and install Kubernetes on those virtual machines.
+machines on Oxide that can then be used to deploy Kubernetes clusters.
 
 == Build
 
@@ -10,16 +10,17 @@ Build the binary using `+make+`.
 
 [source,sh]
 ----
-make build
+make
 ----
 
 == Deployment
 
-Upload a built binary somewhere accessible from Rancher. The binary name must
-match the format `docker-machine-driver-*` otherwise Rancher will error when
-trying to create a new node driver.
+Upload the built binary somewhere accessible from Rancher. The binary name must
+match the format `+docker-machine-driver-*+` (e.g.,
+`+docker-machine-driver-oxide+`) otherwise Rancher will error when trying to
+activate the node driver.
 
-Ensure your `kubectl` context is configured to use your Rancher Kubernetes
+Ensure your `+kubectl+` context is configured to use your Rancher Kubernetes
 cluster.
 
 Create the following Kubernetes manifest.

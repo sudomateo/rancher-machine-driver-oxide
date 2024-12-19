@@ -1,7 +1,10 @@
 GO = go
 
 BINDIR := bin
-BINARY := oxide-rancher-machine-driver
+
+# Rancher expects the the binary name to match the format
+# `docker-machine-driver-*` otherwise it will error.
+BINARY := docker-machine-driver-oxide
 
 LDFLAGS := -ldflags "-w -s -extldflags '-static -Wl,--fatal-warnings'"
 TAGS := "netgo osusergo no_stage static_build"
