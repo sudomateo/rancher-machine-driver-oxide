@@ -56,10 +56,3 @@ Apply the Kubernetes manifest to create the Oxide Rancher node driver.
 ----
 kubectl apply -f oxide-nodedriver.yaml
 ----
-
-== Rancher UI Extensions
-
-The default user interface is sufficient for most use cases.
-
-In the future, https://extensions.rancher.io/[Rancher UI Extensions] can be
-used to extend the node driver UI.
